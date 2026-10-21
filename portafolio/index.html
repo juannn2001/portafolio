@@ -1,0 +1,462 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="theme-color" content="#0b0d10">
+  <meta name="description" content="Portafolio de desarrollo de videojuegos de Juan Diego. Proyectos con Unity, C# y diseño de gameplay.">
+  <title>Juan Diego | Unity Game Developer</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <style>
+    
+    .project-art {
+     position: relative;
+     overflow: hidden;
+    }
+
+    .project-art .project-image {
+     display: block;
+     width: 100%;
+     aspect-ratio: 16 / 9;
+     object-fit: cover;
+    }
+
+    :root {
+      color-scheme: dark;
+      --bg: #0b0d10;
+      --surface: #12161b;
+      --surface-2: #171c22;
+      --text: #f1f5f2;
+      --muted: #9aa6a0;
+      --line: #27312e;
+      --accent: #b8ff65;
+      --accent-dark: #1d2a17;
+      --mono: "DM Mono", monospace;
+      --sans: "Manrope", sans-serif;
+      --radius: 18px;
+      --max-width: 1120px;
+    }
+
+    * { box-sizing: border-box; }
+    html { scroll-behavior: smooth; scroll-padding-top: 88px; }
+    body {
+      margin: 0;
+      background:
+        radial-gradient(ellipse at 80% 0%, rgba(184,255,101,.07), transparent 32rem),
+        var(--bg);
+      color: var(--text);
+      font-family: var(--sans);
+      line-height: 1.65;
+    }
+    body.menu-open { overflow: hidden; }
+    a { color: inherit; text-decoration: none; }
+    button { font: inherit; }
+    img { display: block; max-width: 100%; }
+    .container { width: min(var(--max-width), calc(100% - 40px)); margin-inline: auto; }
+    .mono { font-family: var(--mono); }
+    .eyebrow {
+      display: inline-flex; align-items: center; gap: 10px;
+      color: var(--accent); font: 500 .76rem var(--mono);
+      letter-spacing: .12em; text-transform: uppercase;
+    }
+    .eyebrow::before { content: ""; width: 22px; height: 1px; background: currentColor; }
+    .section { padding: 104px 0; }
+    .section-heading { display: flex; justify-content: space-between; align-items: end; gap: 24px; margin-bottom: 38px; }
+    .section-heading h2 { margin: 12px 0 0; font-size: clamp(2rem, 4vw, 3.15rem); line-height: 1.12; letter-spacing: -.055em; }
+    .section-heading p { max-width: 420px; margin: 0; color: var(--muted); font-size: .96rem; }
+    .accent { color: var(--accent); }
+    .skip-link { position: absolute; top: -60px; left: 16px; z-index: 1000; padding: 10px 14px; background: var(--accent); color: #10140d; border-radius: 8px; }
+    .skip-link:focus { top: 12px; }
+
+    /* Navegación */
+    .site-header {
+      position: sticky; top: 0; z-index: 100;
+      background: rgba(11,13,16,.82); backdrop-filter: blur(18px);
+      border-bottom: 1px solid rgba(39,49,46,.8);
+    }
+    .nav { min-height: 74px; display: flex; justify-content: space-between; align-items: center; gap: 24px; }
+    .brand { display: inline-flex; align-items: center; gap: 11px; font-weight: 800; letter-spacing: -.04em; }
+    .brand-mark {
+      display: grid; place-items: center; width: 34px; height: 34px;
+      border-radius: 10px; background: var(--accent); color: #10140d;
+      font: 500 .8rem var(--mono);
+    }
+    .nav-links { display: flex; align-items: center; gap: 28px; margin: 0; padding: 0; list-style: none; }
+    .nav-links a { color: var(--muted); font-size: .88rem; transition: color .2s ease; }
+    .nav-links a:hover, .nav-links a:focus-visible { color: var(--accent); }
+    .nav-links .nav-cta { color: var(--accent); border: 1px solid #476139; padding: 9px 14px; border-radius: 9px; }
+    .menu-toggle { display: none; border: 1px solid var(--line); background: var(--surface); color: var(--text); padding: 9px 11px; border-radius: 9px; cursor: pointer; }
+
+    /* Hero */
+    .hero { min-height: 670px; display: grid; align-items: center; padding: 92px 0 84px; }
+    .hero-grid { display: grid; grid-template-columns: minmax(0, 1.2fr) minmax(280px, .8fr); gap: 56px; align-items: center; }
+    .availability { display: inline-flex; align-items: center; gap: 9px; color: #c9d5cb; font: .76rem var(--mono); border: 1px solid var(--line); border-radius: 999px; padding: 8px 12px; background: rgba(18,22,27,.7); }
+    .availability-dot { width: 7px; height: 7px; border-radius: 50%; background: var(--accent); box-shadow: 0 0 12px rgba(184,255,101,.75); }
+    .hero h1 { margin: 25px 0 20px; font-size: clamp(3.2rem, 7.3vw, 6.25rem); line-height: .99; letter-spacing: -.085em; font-weight: 800; }
+    .hero h1 span { display: block; color: var(--accent); }
+    .hero-copy { max-width: 600px; color: var(--muted); font-size: clamp(1rem, 1.6vw, 1.12rem); }
+    .hero-copy strong { color: var(--text); font-weight: 600; }
+    .hero-actions { display: flex; flex-wrap: wrap; gap: 12px; margin-top: 30px; }
+    .button { display: inline-flex; align-items: center; justify-content: center; gap: 10px; min-height: 48px; padding: 12px 18px; border-radius: 10px; border: 1px solid transparent; font-size: .9rem; font-weight: 800; transition: transform .2s ease, border-color .2s ease, background .2s ease; cursor: pointer; }
+    .button:hover { transform: translateY(-2px); }
+    .button-primary { color: #10140d; background: var(--accent); }
+    .button-primary:hover { background: #c9ff8b; }
+    .button-secondary { color: var(--text); border-color: var(--line); background: rgba(18,22,27,.7); }
+    .button-secondary:hover { border-color: #64765a; }
+    .hero-meta { display: flex; gap: 25px; flex-wrap: wrap; margin-top: 38px; color: var(--muted); font: .74rem var(--mono); }
+    .hero-meta span { display: inline-flex; align-items: center; gap: 8px; }
+    .hero-meta span::before { content: "↗"; color: var(--accent); }
+
+    .terminal {
+      position: relative; padding: 18px; border: 1px solid #303b35; border-radius: 18px;
+      background: linear-gradient(145deg, rgba(23,28,34,.98), rgba(12,15,18,.98));
+      box-shadow: 0 28px 90px rgba(0,0,0,.28);
+      transform: rotate(1.3deg);
+    }
+    .terminal-top { display: flex; align-items: center; justify-content: space-between; padding-bottom: 16px; border-bottom: 1px solid var(--line); color: var(--muted); font: .72rem var(--mono); }
+    .terminal-dots { display: flex; gap: 6px; }
+    .terminal-dots i { display: block; width: 7px; height: 7px; border-radius: 50%; background: #465148; }
+    .terminal-dots i:first-child { background: var(--accent); }
+    .terminal-body { padding: 25px 4px 8px; font: .82rem/2 var(--mono); color: #b9c6bc; }
+    .terminal-line { display: flex; gap: 12px; }
+    .terminal-line .line-no { color: #5d6b60; user-select: none; }
+    .terminal-line .code-green { color: var(--accent); }
+    .terminal-line .code-blue { color: #8cc9ff; }
+    .terminal-line .code-muted { color: #77857a; }
+    .terminal-status { display: flex; justify-content: space-between; margin-top: 24px; padding-top: 13px; border-top: 1px solid var(--line); color: #748176; font: .65rem var(--mono); }
+    .terminal-badge { position: absolute; right: -18px; bottom: 45px; padding: 12px 14px; border: 1px solid #3a4a32; border-radius: 12px; background: #172015; color: var(--accent); font: .72rem var(--mono); box-shadow: 0 12px 35px #0005; }
+
+    /* Sobre mí */
+    .about-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 58px; align-items: start; }
+    .about-copy p { color: var(--muted); margin: 0 0 18px; }
+    .about-copy p strong { color: var(--text); }
+    .about-note { margin-top: 28px; padding: 18px 20px; border-left: 2px solid var(--accent); background: linear-gradient(90deg, rgba(184,255,101,.07), transparent); color: #c8d1ca; font-size: .92rem; }
+    .skill-panel { padding: 26px; background: var(--surface); border: 1px solid var(--line); border-radius: var(--radius); }
+    .skill-panel h3 { margin: 0 0 20px; font-size: 1rem; }
+    .skill-group + .skill-group { margin-top: 23px; }
+    .skill-label { color: var(--muted); font: .7rem var(--mono); text-transform: uppercase; letter-spacing: .08em; margin-bottom: 11px; }
+    .tags { display: flex; flex-wrap: wrap; gap: 8px; }
+    .tag { display: inline-flex; padding: 7px 8px; border: 0px solid #303a34; border-radius: 7px; background: #171d1a; color: #d6e1d8; font: .72rem var(--mono); }
+    .tag.featured { color: var(--accent); border-color: #405536; background: rgb(26, 102, 26); }
+
+    /* Proyectos */
+    .projects { background: linear-gradient(180deg, transparent, rgba(18,22,27,.55) 12%, rgba(18,22,27,.55) 88%, transparent); }
+    .project-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 22px; }
+    .project-card { overflow: hidden; background: var(--surface); border: 1px solid var(--line); border-radius: var(--radius); transition: transform .25s ease, border-color .25s ease; }
+    .project-card:hover { transform: translateY(-5px); border-color: #53634a; }
+    .project-art { position: relative; overflow: hidden; aspect-ratio: 16 / 9; background: #171e20; }
+    .project-art svg { width: 100%; height: 100%; display: block; transition: transform .5s ease; }
+    .project-card:hover .project-art svg { transform: scale(1.035); }
+    .art-label { position: absolute; top: 13px; left: 13px; padding: 6px 9px; border-radius: 6px; background: rgba(8,11,10,.78); border: 1px solid rgba(255,255,255,.12); color: #e5eee6; font: .65rem var(--mono); letter-spacing: .08em; }
+    .project-content { padding: 23px; }
+    .project-topline { display: flex; justify-content: space-between; align-items: start; gap: 12px; }
+    .project-topline h3 { margin: 0; font-size: 1.28rem; letter-spacing: -.04em; }
+    .project-number { color: #6f7e72; font: .72rem var(--mono); }
+    .project-content p { margin: 12px 0 18px; color: var(--muted); font-size: .89rem; }
+    .project-content .tags { margin-bottom: 22px; }
+    .project-links { display: flex; flex-wrap: wrap; gap: 17px; padding-top: 16px; border-top: 1px solid var(--line); }
+    .text-link { display: inline-flex; align-items: center; gap: 7px; color: var(--text); font-size: .8rem; font-weight: 700; }
+    .text-link span { color: var(--accent); transition: transform .2s ease; }
+    .text-link:hover span { transform: translate(3px,-2px); }
+    .project-note { margin-top: 22px; color: var(--muted); font-size: .8rem; }
+
+    /* Contacto */
+    .contact-panel { position: relative; overflow: hidden; padding: clamp(28px, 5vw, 56px); border: 1px solid #354333; border-radius: 22px; background: radial-gradient(ellipse at 100% 0%, rgba(184,255,101,.09), transparent 48%), var(--surface); }
+    .contact-panel h2 { max-width: 650px; margin: 14px 0 16px; font-size: clamp(2.4rem, 5vw, 4.3rem); line-height: 1.03; letter-spacing: -.07em; }
+    .contact-panel > p { max-width: 600px; margin: 0; color: var(--muted); }
+    .contact-links { display: flex; flex-wrap: wrap; gap: 12px; margin-top: 30px; }
+    .contact-link { display: flex; align-items: center; gap: 10px; padding: 12px 15px; border: 1px solid var(--line); border-radius: 10px; background: rgba(11,13,16,.55); color: #dce5dd; font-size: .84rem; transition: border-color .2s ease, color .2s ease; }
+    .contact-link:hover { border-color: var(--accent); color: var(--accent); }
+    .contact-link .symbol { color: var(--accent); font: .85rem var(--mono); }
+    footer { padding: 26px 0; border-top: 1px solid var(--line); color: #78857b; font: .72rem var(--mono); }
+    .footer-inner { display: flex; justify-content: space-between; align-items: center; gap: 18px; }
+    .back-top { color: var(--accent); }
+
+    .reveal { opacity: 0; transform: translateY(18px); transition: opacity .65s ease, transform .65s ease; }
+    .reveal.is-visible { opacity: 1; transform: translateY(0); }
+    :focus-visible { outline: 2px solid var(--accent); outline-offset: 4px; }
+    @media (prefers-reduced-motion: reduce) {
+      *, *::before, *::after { scroll-behavior: auto !important; animation-duration: .01ms !important; transition-duration: .01ms !important; }
+      .reveal { opacity: 1; transform: none; }
+    }
+    @media (max-width: 820px) {
+      .hero { min-height: auto; padding: 76px 0; }
+      .hero-grid { grid-template-columns: 1fr; gap: 45px; }
+      .terminal { width: min(100%, 540px); transform: none; }
+      .terminal-badge { right: 12px; bottom: 24px; }
+      .about-grid { grid-template-columns: 1fr; gap: 32px; }
+      .section { padding: 78px 0; }
+      .section-heading { align-items: start; flex-direction: column; }
+    }
+    @media (max-width: 640px) {
+      .container { width: min(var(--max-width), calc(100% - 30px)); }
+      .nav { min-height: 66px; }
+      .menu-toggle { display: inline-flex; align-items: center; gap: 8px; }
+      .nav-links {
+        display: none; position: absolute; top: 65px; left: 0; right: 0;
+        padding: 20px 22px 24px; flex-direction: column; align-items: stretch; gap: 0;
+        background: rgba(11,13,16,.98); border-bottom: 1px solid var(--line);
+      }
+      .nav-links.is-open { display: flex; }
+      .nav-links li a { display: block; padding: 13px 0; }
+      .nav-links .nav-cta { margin-top: 8px; padding: 10px 13px; text-align: center; }
+      .hero h1 { font-size: clamp(3rem, 15vw, 5rem); }
+      .hero-meta { gap: 12px 20px; }
+      .project-grid { grid-template-columns: 1fr; }
+      .project-content { padding: 20px; }
+      .contact-links { flex-direction: column; align-items: stretch; }
+      .contact-link { justify-content: flex-start; }
+      .footer-inner { flex-direction: column; align-items: flex-start; }
+    }
+  </style>
+</head>
+<body>
+  <a class="skip-link" href="#contenido">Saltar al contenido</a>
+
+  <header class="site-header">
+    <nav class="nav container" aria-label="Navegación principal">
+      <a class="brand" href="#inicio" aria-label="Juan Diego, inicio">
+        <span class="brand-mark">JD</span>
+        <span>JUAN DIEGO<span class="accent">.</span></span>
+      </a>
+      <button class="menu-toggle" type="button" aria-expanded="false" aria-controls="nav-links">
+        <span aria-hidden="true">☰</span> Menú
+      </button>
+      <ul class="nav-links" id="nav-links">
+        <li><a class="tag" href="E:\portafolio\juan-diego-hdv.pdf" download="juan-diego-hdv.pdf">Descarga CV</a></li>
+        <li><a class="tag" href="#sobre-mi">Sobre mí</a></li>
+        <li><a class="tag" href="#contacto">Contacto</a></li>
+        <li><a class="tag featured" href="#proyectos">Proyectos ↓ </a></li>
+      </ul>
+    </nav>
+  </header>
+
+  <main id="contenido">
+    <section class="hero container" id="inicio">
+      <div class="hero-grid">
+        <div class="reveal">
+          <div class="availability"><span class="availability-dot"></span> CREANDO · APRENDIENDO · ITERANDO</div>
+          <p class="eyebrow" style="margin-top: 28px;">Portafolio de desarrollo</p>
+          <h1>Imaginar<br>Programar<span>y Crear ;)</span></h1>
+          <p class="hero-copy">
+            Hola! mi nombre es <strong>Juan Diego</strong> y soy desarrollador de unity.
+            Me gusta crear y compartir ideas creativas e interesantes usando <strong>Unity y C#</strong>,
+            con atención a las mecánicas, el control del jugador y los detalles que hacen divertido un juego.
+          </p>
+          <div class="hero-actions">
+            <a class="button button-primary" href="#proyectos">Ver proyectos <span aria-hidden="true">↘</span></a>
+            <a class="button button-secondary" href="#contacto">Hablemos <span aria-hidden="true">↗</span></a>
+          </div>
+          <div class="hero-meta">
+            <span>Unity · C#</span>
+            <span>Gameplay programming</span>
+            <span>Aprendizaje continuo</span>
+          </div>
+        </div>
+
+        <div class="terminal reveal" aria-label="Ilustración decorativa de código C sharp">
+          <div class="terminal-top">
+            <span class="terminal-dots" aria-hidden="true"><i></i><i></i><i></i></span>
+            <span>PlayerController.cs</span>
+            <span>C#</span>
+          </div>
+          <div class="terminal-body" aria-hidden="true">
+            <div class="terminal-line"><span class="line-no">01</span><span><span class="code-blue">using</span> UnityEngine;</span></div>
+            <div class="terminal-line"><span class="line-no">02</span><span></span></div>
+            <div class="terminal-line"><span class="line-no">03</span><span><span class="code-muted">// Cada idea empieza con una prueba.</span></span></div>
+            <div class="terminal-line"><span class="line-no">04</span><span><span class="code-blue">public class</span> <span class="code-green">PlayerController</span> : MonoBehaviour</span></div>
+            <div class="terminal-line"><span class="line-no">05</span><span>{</span></div>
+            <div class="terminal-line"><span class="line-no">06</span><span>&nbsp;&nbsp;<span class="code-blue">void</span> Update()</span></div>
+            <div class="terminal-line"><span class="line-no">07</span><span>&nbsp;&nbsp;{</span></div>
+            <div class="terminal-line"><span class="line-no">08</span><span>&nbsp;&nbsp;&nbsp;&nbsp;ReadInput();</span></div>
+            <div class="terminal-line"><span class="line-no">09</span><span>&nbsp;&nbsp;&nbsp;&nbsp;MovePlayer();</span></div>
+            <div class="terminal-line"><span class="line-no">10</span><span>&nbsp;&nbsp;}</span></div>
+            <div class="terminal-line"><span class="line-no">11</span><span>}</span></div>
+          </div>
+          <div class="terminal-status"><span>● READY TO BUILD</span><span>UTF-8 · CRLF</span></div>
+          <div class="terminal-badge">✳ PLAY · TEST · REPEAT</div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section container" id="sobre-mi">
+      <div class="section-heading reveal">
+        <div><span class="eyebrow">01 / Sobre mí</span><h2>Curiosidad técnica.<br><span class="accent">Mentalidad creativa.</span></h2></div>
+        <p>Me interesa tanto lo que sucede detrás de cada sistema como lo que siente el jugador al usarlo.</p>
+      </div>
+      <div class="about-grid">
+        <div class="about-copy reveal">
+          <p>Soy desarrollador de software y estoy orientando mi camino profesional hacia la <strong>industria del desarrollo de videojuegos</strong>, especialmente con Unity.</p>
+          <p>Actualmente estoy fortaleciendo mis bases en C#, programación orientada a objetos, movimiento de personajes, colisiones, físicas y animaciones. Me gusta aprender construyendo, probar soluciones y entender por qué funcionan.</p>
+          <p>Busco seguir creando proyectos que demuestren mi proceso, mi capacidad para resolver problemas y mi evolución como desarrollador.</p>
+          <div class="about-note">Mi objetivo: transformar conceptos en prototipos jugables, aprender de cada iteración y crear experiencias que valga la pena explorar.</div>
+        </div>
+        <div class="skill-panel reveal">
+          <h3>Stack y herramientas</h3>
+          <div class="skill-group">
+            <div class="skill-label">Desarrollo de videojuegos</div>
+            <div class="tags"><span class="tag featured">Unity</span><span class="tag featured">C#</span><span class="tag">Gameplay</span><span class="tag">Físicas</span><span class="tag">Colisiones</span><span class="tag">UI</span><span class="tag">Animaciones</span><span class="tag">Optimización</span></div>
+          </div>
+          <div class="skill-group">
+            <div class="skill-label">Flujo de trabajo</div>
+            <div class="tags"><span class="tag">Git</span><span class="tag">GitHub</span><span class="tag">Depuración</span><span class="tag">Visual Studio</span><span class="tag">Unity Editor</span></div>
+          </div>
+          <div class="skill-group">
+            <div class="skill-label">Otras bases de software</div>
+            <div class="tags"><span class="tag">HTML</span><span class="tag">CSS</span><span class="tag">JavaScript</span><span class="tag">Python</span><span class="tag">SQL</span></div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section projects" id="proyectos">
+      <div class="container">
+        <div class="section-heading reveal">
+          <div><span class="eyebrow">02 / Proyectos seleccionados</span><h2>Del prototipo<br>al <span class="accent">juego.</span></h2></div>
+          <p>Una selección para mostrar mecánicas, experimentos y aprendizajes. Sustituye estos ejemplos por tus proyectos reales cuando estén listos.</p>
+        </div>
+
+        <div class="project-grid">
+          <article class="project-card reveal">
+            
+            <div class="project-art">
+             <img
+               class="project-image"
+               src="E:\portafolio\futbol_sumo.png"
+               alt="Captura de pantalla de mi videojuego Neon Leap"
+               loading="lazy"
+             />
+
+  <span class="art-label">UNITY · 3D</span>
+</div>
+
+            <div class="project-content">
+              <div class="project-topline"><h3>SumBall</h3><span class="project-number">01 / 04</span></div>
+              <p>Explora mecanicas de juego, focal point y seguimiento del jugador. Aplica potenciadores y diviértete</p>
+              <div class="tags"><span class="tag featured">Unity</span><span class="tag">C#</span><span class="tag">Physics</span><span class="tag">3D</span><span class="tag">Camera</span></div>
+              <div class="project-links"><a class="text-link" href="https://github.com/" target="_blank" rel="noopener noreferrer">Código en GitHub <span>↗</span></a><a class="text-link" href="https://juandiegoo.itch.io/sumball/" target="_blank" rel="noopener noreferrer">Demo en itch.io <span>↗</span></a></div>
+            </div>
+          </article>
+
+          <article class="project-card reveal">
+            <div class="project-art">
+              <img
+               class="project-image"
+               src="E:\portafolio\Rotaplatform_ Plataforma.png"
+               alt="E:\portafolio\Rotaplatform_ Plataforma.png"
+               loading="lazy"
+             />
+              <span class="art-label">UNITY · 3D</span>
+            </div>
+            <div class="project-content">
+              <div class="project-topline"><h3>Rotateplatform</h3><span class="project-number">02 / 04</span></div>
+              <p>Controla al jugador a partir del enfoque, explora mecanicas de colisión y no caigas!</p>
+              <div class="tags"><span class="tag featured">Unity</span><span class="tag">C#</span><span class="tag">Camera</span><span class="tag">3D</span></div>
+              <div class="project-links"><a class="text-link" href="https://github.com/" target="_blank" rel="noopener noreferrer">Código en GitHub <span>↗</span></a><a class="text-link" href="https://itch.io/" target="_blank" rel="noopener noreferrer">Demo en itch.io <span>↗</span></a></div>
+            </div>
+          </article>
+
+          <article class="project-card reveal">
+            <div class="project-art">
+              <img
+               class="project-image"
+               src="subir cap"
+               alt="E:\portafolio\Rotaplatform_ Plataforma.png"
+               loading="lazy"
+             />
+              <span class="art-label">UNITY · 3D</span>
+            </div>
+            <div class="project-content">
+              <div class="project-topline"><h3>-------</h3><span class="project-number">03 / 04</span></div>
+              <p>------------------------------------------------------------------------------------------------------------</p>
+              <div class="tags"><span class="tag featured">Unity</span><span class="tag">C#</span><span class="tag">UI</span><span class="tag">Game loop</span></div>
+              <div class="project-links"><a class="text-link" href="https://github.com/" target="_blank" rel="noopener noreferrer">Código en GitHub <span>↗</span></a><a class="text-link" href="https://itch.io/" target="_blank" rel="noopener noreferrer">Demo en itch.io <span>↗</span></a></div>
+            </div>
+          </article>
+
+          <article class="project-card reveal">
+            <div class="project-art">
+              <img
+               class="project-image"
+               src="subir cap"
+               alt="subir cap"
+               loading="lazy"
+             />
+              <span class="art-label">UNITY · 3D</span>
+            </div>
+            <div class="project-content">
+              <div class="project-topline"><h3>-------------</h3><span class="project-number">04 / 04</span></div>
+              <p>---------------------------------------------------------------------------------------------------------------</p>
+              <div class="tags"><span class="tag featured">Unity</span><span class="tag">URP</span><span class="tag">Lighting</span><span class="tag">Exploration</span></div>
+              <div class="project-links"><a class="text-link" href="https://github.com/" target="_blank" rel="noopener noreferrer">Código en GitHub <span>↗</span></a><a class="text-link" href="https://itch.io/" target="_blank" rel="noopener noreferrer">Demo en itch.io <span>↗</span></a></div>
+            </div>
+          </article>
+        </div>
+        <p class="project-note mono">NOTA: los nombres, artes y enlaces de esta cuadrícula son demostrativos. No representan juegos publicados ni repositorios tuyos.</p>
+      </div>
+    </section>
+
+    <section class="section container" id="contacto">
+      <div class="contact-panel reveal">
+        <span class="eyebrow">03 / Contacto</span>
+        <h2>¿Creamos algo <span class="accent">jugable?</span></h2>
+        <p>Estoy abierto a conectar con desarrolladores, aprender de otros proyectos y explorar oportunidades relacionadas con desarrollo de videojuegos. Escríbeme o visita mis perfiles.</p>
+        <div class="contact-links">
+          <a class="contact-link" href="https://github.com/" target="_blank" rel="noopener noreferrer"><span class="symbol">GH</span> GitHub <span aria-hidden="true">↗</span></a>
+          <a class="contact-link" href="https://www.linkedin.com/" target="_blank" rel="noopener noreferrer"><span class="symbol">in</span> LinkedIn <span aria-hidden="true">↗</span></a>
+          <a class="contact-link" href="https://itch.io/" target="_blank" rel="noopener noreferrer"><span class="symbol">it</span> itch.io <span aria-hidden="true">↗</span></a>
+          <a class="contact-link" href="mailto:tu.correo@ejemplo.com"><span class="symbol">@</span> tu.correo@ejemplo.com <span aria-hidden="true">↗</span></a>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    <div class="container footer-inner">
+      <span>© <span id="year"></span> JUAN DIEGO · HECHO CON CURIOSIDAD.</span>
+      <a class="back-top" href="#inicio">Volver arriba ↑</a>
+    </div>
+  </footer>
+
+  <script>
+    const menuToggle = document.querySelector(".menu-toggle");
+    const navLinks = document.querySelector(".nav-links");
+    const navItems = document.querySelectorAll(".nav-links a");
+
+    menuToggle.addEventListener("click", () => {
+      const isOpen = navLinks.classList.toggle("is-open");
+      menuToggle.setAttribute("aria-expanded", String(isOpen));
+      document.body.classList.toggle("menu-open", isOpen);
+      menuToggle.querySelector("span").textContent = isOpen ? "✕" : "☰";
+    });
+
+    navItems.forEach((link) => {
+      link.addEventListener("click", () => {
+        navLinks.classList.remove("is-open");
+        menuToggle.setAttribute("aria-expanded", "false");
+        document.body.classList.remove("menu-open");
+        menuToggle.querySelector("span").textContent = "☰";
+      });
+    });
+
+    document.getElementById("year").textContent = new Date().getFullYear();
+
+    const revealElements = document.querySelectorAll(".reveal");
+    if ("IntersectionObserver" in window && !window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
+      const observer = new IntersectionObserver((entries, currentObserver) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            entry.target.classList.add("is-visible");
+            currentObserver.unobserve(entry.target);
+          }
+        });
+      }, { threshold: 0.12 });
+      revealElements.forEach((element) => observer.observe(element));
+    } else {
+      revealElements.forEach((element) => element.classList.add("is-visible"));
+    }
+  </script>
+</body>
+</html>
